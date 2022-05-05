@@ -8,7 +8,7 @@
 
 ## Lessons
 
-1. Lifetime
+1. [Lifetime](./ch1)
 2. Functional Programing
 3. Types & Macro
 4. Smart Pointers
