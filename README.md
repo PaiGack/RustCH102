@@ -10,7 +10,7 @@
 
 1. [Lifetime](./ch1)
 2. [Functional Programing](./ch2)
-3. Types & Macro
+3. [Types](./ch3) & Macro
 4. Smart Pointers
 5. Impl List1
 6. Impl List2
