@@ -9,7 +9,7 @@
 ## Lessons
 
 1. [Lifetime](./ch1)
-2. Functional Programing
+2. [Functional Programing](./ch2)
 3. Types & Macro
 4. Smart Pointers
 5. Impl List1
