@@ -9,10 +9,10 @@
 ## Lessons
 
 1. [Lifetime](./ch1)
-2. Functional Programing
-3. Types & Macro
+2. [Functional Programing](./ch2)
+3. [Types](./ch3) & Macro
 4. Smart Pointers
-5. Impl List1
+5. [Impl List1](./list1)
 6. Impl List2
 7. Multithread
 8. Unsafe
