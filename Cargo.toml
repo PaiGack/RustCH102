@@ -8,4 +8,5 @@ members = [
     "smart_pointer",
     "macro_rules",
     "unsafe_mutex_lock",
+    "thread",
 ]
