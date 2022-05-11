@@ -19,5 +19,9 @@ name = "list1"
 version = "0.1.0"
 
 [[package]]
+name = "macro_rules"
+version = "0.1.0"
+
+[[package]]
 name = "smart_pointer"
 version = "0.1.0"

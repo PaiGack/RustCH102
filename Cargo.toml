@@ -1,3 +1,3 @@
 [workspace]
 
-members = ["ch1", "ch2", "ch3", "list1", "smart_pointer"]
+members = ["ch1", "ch2", "ch3", "list1", "smart_pointer", "macro_rules"]
