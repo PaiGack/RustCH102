@@ -1,4 +1,4 @@
-#![allow(unused)]
+// #![allow(unused)]
 
 // 1个数据结构 它有自己的数据
 // 还有自己的一些操作。这些操作就维持了数据一些结构保证它的一些特性
@@ -31,42 +31,60 @@
 // 多重Hash
 // History
 // rc
+pub mod vec_list;
 
-struct ListHistory<T> {
-    list: List<T>
+struct ListHistory<T: Clone> {
+    list: Vec<List<T>>,
+    size: usize,
 }
 
 // implement Drop trait and call methods
-impl<T> ListHistory<T> {
+impl<T: Clone> ListHistory<T> {
     pub fn new() -> Self {
-        todo!()
+        ListHistory {
+            list: vec![List::new()],
+            size: 1,
+        }
     }
 
-    pub fn get_list_version(&self, version: u64) -> Option<List<T>> {
-        todo!()
+    pub fn get_list_version(&self, version: u64) -> Option<&List<T>> {
+        if version as usize > self.size {
+            return None;
+        }
+        Some(&self.list[version as usize])
     }
 
-    pub fn prepend(&self, elem: T) -> List<T> {
-        todo!()
+    pub fn prepend(&mut self, elem: T) -> List<T> {
+        let new_list = self.list[self.size - 1].prepend(elem.clone());
+        self.list.push(new_list);
+        self.size += 1;
+        self.list[self.size - 1].prepend(elem)
     }
 
-    pub fn tail(&self) -> List<T> {
-        todo!()
+    pub fn tail(&mut self) -> List<T> {
+        self.size -= 1;
+        self.list.pop().unwrap()
     }
 
     pub fn current(&self) -> List<T> {
-        todo!()
+        self.list[self.size - 1].clone()
     }
 }
 
-impl<T> Drop for ListHistory<T> {
-    fn drop(&mut self) {
-        todo!()
+impl<T: Clone> Drop for ListHistory<T> {
+    fn drop(&mut self) {}
+}
+
+impl<T: Eq + Clone> std::ops::Index<usize> for ListHistory<T> {
+    type Output = List<T>;
+    fn index(&self, pos: usize) -> &Self::Output {
+        &self.list[pos]
     }
 }
 
 use std::rc::Rc;
 
+#[derive(Clone)]
 pub struct List<T> {
     head: Link<T>,
 }
@@ -86,7 +104,7 @@ impl<T> List<T> {
     pub fn prepend(&self, elem: T) -> List<T> {
         List {
             head: Some(Rc::new(Node {
-                elem: elem,
+                elem,
                 next: self.head.clone(), // Rc
             })),
         }
@@ -130,12 +148,10 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
-
 // push pop
 // push_front push_back
 // pop_front pop_back
 // peek_front peek_back
-
 
 // 加这个 Drop 的初衷
 // 其实是 List 过长的话就会 栈溢出
@@ -154,7 +170,61 @@ impl<'a, T> Iterator for Iter<'a, T> {
 //     }
 // }
 
+fn main() {}
 
-fn main() {
+#[cfg(test)]
+mod test {
+    use std::ops::Deref;
 
+    use super::*;
+
+    #[test]
+    fn list_history() {
+        let mut version = ListHistory::<i32>::new();
+        assert_eq!(version.list[0].head(), None);
+        let list = version.prepend(1);
+        assert_eq!(version.list[1].head(), Some(&1));
+        let list = version.prepend(2);
+        assert_eq!(list.head(), version.list[2].head() /* , Some(&2)*/);
+        let list = version.get_list_version(2).unwrap();
+        assert_eq!(list.deref().head(), Some(&2));
+        let list = version.tail();
+        assert_eq!(list.head(), Some(&2));
+        let list = version.current();
+        assert_eq!(list.head(), Some(&1));
+    }
+
+    #[test]
+    fn basics() {
+        let list = List::new();
+        assert_eq!(list.head(), None);
+
+        let list = list.prepend(1).prepend(2).prepend(3);
+        assert_eq!(list.head(), Some(&3));
+
+        let list = list.tail();
+        assert_eq!(list.head(), Some(&2));
+
+        let list = list.tail();
+        assert_eq!(list.head(), Some(&1));
+
+        let list = list.tail();
+        assert_eq!(list.head(), None);
+
+        // Make sure empty tail works
+        let list = list.tail();
+        assert_eq!(list.head(), None);
+    }
+
+    #[test]
+    fn iter() {
+        let list = List::new().prepend(1).prepend(2).prepend(3);
+
+        let mut iter = list.iter();
+        assert_eq!(iter.next(), Some(&3));
+        assert_eq!(iter.next(), Some(&2));
+        assert_eq!(iter.next(), Some(&1));
+    }
 }
+
+// fn main() {}

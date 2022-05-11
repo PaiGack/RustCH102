@@ -9,4 +9,5 @@ members = [
     "macro_rules",
     "unsafe_mutex_lock",
     "thread",
+    "list2",
 ]
