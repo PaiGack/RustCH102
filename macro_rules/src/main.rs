@@ -1,10 +1,15 @@
 macro_rules! myprint {
     ($x: expr) => {
-        println!("{}", $x)
-    };
-    ($x: expr, $($y: expr),+) => {
         println!("{}", $x);
-        myprint!($($y),+);
+    };
+    ($x: expr, $y: expr) => {
+        println!("{}", $x);
+        println!("{}", $y);
+    };
+    ($x: expr, $y:expr, $($z: expr),+) => {
+        println!("{}", $x);
+        myprint!($($z),+);
+        println!("{}", $y);
     };
 }
 

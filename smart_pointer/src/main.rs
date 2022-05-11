@@ -1,37 +1,18 @@
-#![allow(unused)]
+pub mod node;
+pub mod weak_node;
 
-use std::rc::{Rc, Weak};
-
-// 2 Assignment
-
-// 实现 Drop 打印 id
-struct Node {
-    id: i32,
-    next: Box<Node>
-}
-
-// n > 0
-// 返回一个循环n次引用的智能指针
-// 数字从 1 - n 
-// 1 -> 2 -> 3 -> 4 -> ... -> n -> 1
-fn generate_n_loop_pointer(n: usize) -> Node {
-    todo!()
-}
-
-// Drop 打印 id
-struct WeakNode {
-    id: i32,
-    next: Weak<Node>
-}
-
-// n > 0
-// 返回一个循环n次引用的智能指针
-// 数字从 1 - n 
-// 1 -> 2 -> 3 -> 4 -> ... -> n -> 1
-fn generate_n_loop_weak_pointer(n: usize) -> WeakNode {
-    todo!()
-}
-
+use crate::node::generate_n_loop_pointer;
+use crate::weak_node::generate_n_loop_weak_pointer;
 
 fn main() {
+    {
+        let list1 = generate_n_loop_pointer(1);
+        println!("-- list1 --")
+    }
+    println!("\n-- list1 end --");
+    {
+        let list2 = generate_n_loop_weak_pointer(1);
+        println!("-- list2 --")
+    }
+    println!("\n-- list2 end --");
 }
